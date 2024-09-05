@@ -1,0 +1,23 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: commit
+        uses: prompt/actions-commit-hash@v3
+      - uses: actions/checkout@v4
+      - name: Build image for commit
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ steps.commit.outputs.short }}
